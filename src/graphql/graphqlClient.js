@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { SERVER_BASE_GRAPHQL_URI } from '../constant/serverURL'
+import { SERVER_BASE_GRAPHQL_URI } from '../constants/serverURL'
 
 const cache = new InMemoryCache({
   typePolicies: {

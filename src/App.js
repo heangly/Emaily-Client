@@ -1,11 +1,22 @@
-import { SERVER_GOOGLE_OAUTH_URI } from './constant/serverURL'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import Home from './pages/Home'
+import NewSurveyForm from './pages/NewSurveyForm'
+import Surveys from './pages/Surveys'
+import Header from './components/Header/Header'
 
 const App = () => {
   return (
-    <div>
-      <h1>App</h1>
-      <a href={SERVER_GOOGLE_OAUTH_URI}>Google OAuth</a>
-    </div>
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/surveys' element={<Surveys />} />
+          <Route path='/surveys/new' element={<NewSurveyForm />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
 
