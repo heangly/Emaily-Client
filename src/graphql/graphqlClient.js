@@ -23,7 +23,8 @@ const cache = new InMemoryCache({
 
 const graphqlClient = new ApolloClient({
   uri: SERVER_BASE_GRAPHQL_URI,
-  cache
+  cache,
+  credentials: 'include'
 })
 
 export default graphqlClient
