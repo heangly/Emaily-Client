@@ -39,7 +39,12 @@ const Header = () => {
                   <Link to='/surveys'>Surveys</Link>
                 </li>
                 <li>
-                  <a onClick={logoutHandler}>Logout</a>
+                  <button
+                    className='waves-effect waves-light btn red lighten-2'
+                    onClick={logoutHandler}
+                  >
+                    Logout
+                  </button>
                 </li>
               </>
             ) : (
