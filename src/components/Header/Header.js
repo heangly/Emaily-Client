@@ -1,31 +1,52 @@
-import { useQuery } from '@apollo/client'
-import { Link } from 'react-router-dom'
+import { useMutation, useQuery } from '@apollo/client'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { SERVER_GOOGLE_OAUTH_URI } from '../../constants/serverURL'
 import { GET_CURRENT_USER } from '../../graphql/queries/userQueries'
+import { LOGOUT_USER } from '../../graphql/mutations/userMutations'
 
 const Header = () => {
-  const { data } = useQuery(GET_CURRENT_USER)
+  const navigate = useNavigate()
 
-  // const user = fetch('http://localhost:4000/api/current_user').then((res) =>
-  //   res.json()
-  // )
+  const { loading, data } = useQuery(GET_CURRENT_USER)
 
-  // user.then((r) => console.log(r))
+  const [logout] = useMutation(LOGOUT_USER, {
+    refetchQueries: [{ query: GET_CURRENT_USER }]
+  })
 
-  console.log(data)
+  if (!loading) {
+    localStorage.setItem('loggedInUser', JSON.stringify(data.currentUser))
+  }
+
+  const logoutHandler = () => {
+    logout().then(() => {
+      navigate('/')
+      localStorage.removeItem('loggedInUser')
+    })
+  }
 
   return (
     <nav>
       <div className='nav-wrapper'>
         <div className='container'>
           <Link className='brand-logo' to='/'>
-            Logo
+            Emaily
           </Link>
           <ul className='right'>
-            <li>
-              <a href={SERVER_GOOGLE_OAUTH_URI}>Login With Google</a>
-            </li>
+            {data?.currentUser ? (
+              <>
+                <li>
+                  <Link to='/surveys'>Surveys</Link>
+                </li>
+                <li>
+                  <a onClick={logoutHandler}>Logout</a>
+                </li>
+              </>
+            ) : (
+              <li>
+                <a href={SERVER_GOOGLE_OAUTH_URI}>Login With Google</a>
+              </li>
+            )}
           </ul>
         </div>
       </div>
