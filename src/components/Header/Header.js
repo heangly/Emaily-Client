@@ -12,21 +12,24 @@ const Header = () => {
   const { loading, data } = useQuery(GET_CURRENT_USER)
   const { loading: priceLoading, data: priceData } = useQuery(GET_PAYMENT_PRICE)
 
-  const [checkout] = useMutation(CHECKOUT_PAYMENT, {
-    variables: { priceId: priceData?.prices[0].id }
-  })
+  const [
+    checkout,
+    { data: checkoutData, loading: checkoutLoading, error: checkoutError }
+  ] = useMutation(CHECKOUT_PAYMENT)
 
   const [logout] = useMutation(LOGOUT_USER, {
     refetchQueries: [{ query: GET_CURRENT_USER }]
   })
 
   if (!loading) {
-    localStorage.setItem('loggedInUser', JSON.stringify(data.currentUser))
+    localStorage.setItem('loggedInUser', JSON.stringify(data?.currentUser))
   }
 
   const addCreditHandler = async () => {
     if (!priceLoading) {
-      const { data } = await checkout()
+      const { data } = await checkout({
+        variables: { priceId: priceData?.prices[0].id }
+      })
       window.location.href = data.checkout.url
     }
   }
@@ -53,7 +56,7 @@ const Header = () => {
                     className='waves-effect waves-light btn green'
                     onClick={addCreditHandler}
                   >
-                    Add Credit
+                    {checkoutLoading ? 'Loading...' : 'Add Credit'}
                   </button>
                 </li>
 

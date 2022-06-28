@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div>
       <Landing />
-      {!loading && data.currentUser && (
+      {!loading && data?.currentUser && (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
           <Link to='/surveys' className='btn blue'>
             Go to surveys
